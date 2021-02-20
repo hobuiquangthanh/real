@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Switch, Redirect, Route } from "react-router-dom";
-import Home from "./components/Home";
-import Admin from "./components/Dashboard";
-import CollectionsPage from "./components/Home/Pages/CollectionsPage/CollectionsPage";
-import DetailPage from "./components/Home/Pages/DetailPage/DetailPage";
+import Home from "./Home";
+import Admin from "./Dashboard";
+import CollectionsPage from "./Home/Pages/CollectionsPage/CollectionsPage";
+import DetailPage from "./Home/Pages/DetailPage/DetailPage";
 
 function App() {
     return (
@@ -33,5 +33,5 @@ function App() {
 export default App;
 
 if (document.getElementById("app")) {
-  ReactDOM.render(<App />, document.getElementById("app"));
+    ReactDOM.render(<App />, document.getElementById("app"));
 }

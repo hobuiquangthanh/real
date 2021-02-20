@@ -1,0 +1,39 @@
+
+ .nav {
+	 width: 100%;
+	 padding: 1rem 0;
+}
+ .nav__list {
+	 display: flex;
+	 flex-flow: wrap;
+	 align-items: stretch;
+}
+ .nav__list--filter {
+	 margin: 0 0.5rem;
+	 min-width: 10rem;
+}
+ .nav__list--filter button {
+	 width: 100%;
+}
+ .nav__list--search {
+	 position: relative;
+	 margin-right: 0.5rem;
+}
+ .nav__list--search input {
+	 width: 100%;
+	 padding: 0.5rem;
+	 border-radius: 0.5rem;
+	 border: 0.1rem solid #000;
+	 outline: none;
+}
+ .nav__list--search input:focus, .nav__list--search input:active {
+	 border-color: #006aff;
+}
+ .nav__list--search i {
+	 position: absolute;
+	 color: #006aff;
+	 font-size: 1.3rem;
+	 right: 1rem;
+	 top: 1.2rem;
+}
+ 

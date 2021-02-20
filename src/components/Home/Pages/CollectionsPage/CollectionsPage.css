@@ -1,0 +1,38 @@
+
+ .collections__content {
+	 width: 100%;
+	 display: flex;
+	 height: calc(100vh - 143px);
+}
+ .collections__content-map {
+	 flex: 1;
+	 background: green;
+	 height: 100%;
+}
+ .collections__content-result {
+	 flex: 0 0 75rem;
+	 height: 100%;
+	 overflow-y: auto;
+}
+ .collections__content-result .search-result__select {
+	 color: #006aff;
+}
+ .collections__content-result .search-result__item {
+	 width: 49%;
+}
+ @media (min-width: 768px) and (max-width: 1023px) {
+	 .collections__content {
+		 display: block;
+		 height: auto;
+	}
+	 .collections__content-map {
+		 width: 100vw;
+		 height: 80vh;
+		 display: block;
+	}
+	 .collections__content-result {
+		 flex: 0 0 100%;
+		 overflow-y: scroll;
+	}
+}
+ 

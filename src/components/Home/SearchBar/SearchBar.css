@@ -1,0 +1,32 @@
+
+ .search {
+	 width: 100%;
+	 position: fixed;
+	 top: 0;
+	 left: 0;
+	 background: white;
+	 padding: 1.5rem;
+	 z-index: 2000;
+	 transition: 0.4s all;
+	 visibility: hidden;
+	 opacity: 0;
+}
+ .search.show {
+	 visibility: visible;
+	 opacity: 1;
+}
+ .search__wrapper {
+	 width: 80%;
+	 display: block;
+	 margin: 0 auto;
+}
+ .search__input {
+	 padding: 0.5rem 1rem;
+	 width: 100%;
+}
+ .search i {
+	 right: 1rem;
+	 top: 1rem;
+	 color: #006aff;
+}
+ 

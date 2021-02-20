@@ -1,0 +1,11 @@
+
+ .categories {
+	 background-color: #f9f9fb;
+}
+ .categories__line {
+	 width: 14rem;
+	 margin: 0 auto;
+	 height: 0.2rem;
+	 background: #ffd237;
+}
+ 

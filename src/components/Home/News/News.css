@@ -1,0 +1,23 @@
+
+ .news {
+	 background: #fff;
+}
+ .news__items--item {
+	 width: 33%;
+}
+ @media (min-width: 768px) and (max-width: 1023px) {
+	 .news__items--item {
+		 width: 49%;
+	}
+}
+ @media (max-width: 479px) {
+	 .news__items--item {
+		 width: 100%;
+	}
+}
+ @media (min-width: 480px) and (max-width: 768px) {
+	 .news__items--item {
+		 width: 100%;
+	}
+}
+ 

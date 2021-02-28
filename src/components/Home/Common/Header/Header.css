@@ -1,4 +1,3 @@
-
 .header__links {
     display: flex;
     align-items: center;
@@ -8,7 +7,7 @@
 }
 .header__logo h2 {
     font-weight: bold;
-    font-size: 5rem;
+    font-size: 5rem; 
 }
 .header__auth {
     display: flex;

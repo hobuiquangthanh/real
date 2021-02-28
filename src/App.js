@@ -5,7 +5,8 @@ import Home from "./components/Home";
 import Admin from "./components/Dashboard";
 import CollectionsPage from "./components/Home/Pages/CollectionsPage/CollectionsPage";
 import DetailPage from "./components/Home/Pages/DetailPage/DetailPage";
-
+import "./App.css";
+import './index.css';
 function App() {
     return (
         <BrowserRouter>

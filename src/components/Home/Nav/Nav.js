@@ -1,8 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
+import './Nav.css';
 
 // scss
-import "./Nav.css"
 
 const Nav = props => {
   return (

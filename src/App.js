@@ -7,7 +7,6 @@ import CollectionsPage from "./components/Home/Pages/CollectionsPage/Collections
 import DetailPage from "./components/Home/Pages/DetailPage/DetailPage";
 import "./App.css";
 import './index.css';
-import User from "./components/Dashboard/Components/User/User/User";
 function App() {
     return (
         <BrowserRouter>
@@ -26,12 +25,7 @@ function App() {
                 </Route>
                 <Route path="/admin">
                     <Admin />
-                </Route>
-                <Route path="/user">
-                    <User/>
-                </Route>
-
-            
+                </Route>     
             </Switch>
         </BrowserRouter>
     );

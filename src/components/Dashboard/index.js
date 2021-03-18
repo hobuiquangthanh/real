@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import Header from "./Common/Header/Header";
 import SideBar from "./Common/Side Bar/SideBar";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import User from "./Pages/User/User";
 import Dashboard from "./Pages/Dashboard"
 import Products from "./Pages/Products"
 import Detail from "./Pages/DetailPage";
+import User from "./Pages/User/User";
 
 const index = props => {
     return (
@@ -18,7 +18,7 @@ const index = props => {
                 <Route path="/admin" exact>
                 </Route>
                 <Route path="/admin/user">
-                    <User />
+                    <User/>
                 </Route>
                 <Route path="/admin/products">
                     <Products />

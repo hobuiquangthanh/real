@@ -17,6 +17,18 @@ function Detail(props) {
             about: "Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type."
         }
     ]
+
+    const estateInfo = [
+        {
+            id: 1,
+            ownerName: "Mark A. McKnight",
+            phone: "(123) 123 1234",
+            email: "johnath@domain.com",
+            address: "123 Quang Trung, Q.12, Tp.HCM",
+            about: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. But also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        }
+    ]
+
     return (
         <div>
             <OwnerList ownerInfo={ownerInfo} />
@@ -35,7 +47,7 @@ function Detail(props) {
                 </ul>
                 <div classname="tab-content">
                     <div classname="tab-pane active" id="home-b1">
-                        <EstateInfo />
+                        <EstateInfo estateInfo={estateInfo} />
                     </div></div></div>
                     <div classname="tab-pane" id="profile-b1">
                         

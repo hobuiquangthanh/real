@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 
 SideBar.propTypes = {
     
@@ -15,7 +16,7 @@ function SideBar(props) {
                 <img src="images/users/avatar-1.jpg" alt="" className="avatar-md rounded-circle" />
                 </div>
                 <div className="user-info">
-                <a href="#">Stanley Jones</a>
+                <Link to="/admin">Stanley Jones</Link>
                 <p className="text-muted m-0">Quản Trị Viên</p>
                 </div>
             </div>
@@ -24,24 +25,24 @@ function SideBar(props) {
                 <ul className="metismenu" id="side-menu">
                 <li className="menu-title">Navigation</li>
                 <li>
-                    <a href="index.html">
+                    <Link to="/admin">
                     <i className="ti-home" />
                     <span> Bảng Điều Khiển </span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="user-table.html">
+                    <Link to="/admin/user">
                     <i className="ti-paint-bucket" />
                     <span> Người Dùng </span>
                     <span className="badge badge-primary float-right">11</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
-                    <a href="product-table.html">
+                    <Link to="/admin/products">
                     <i className="ti-pie-chart" />
                     <span>  Sản Phẩm</span>
                     <span className="badge badge-primary float-right">5</span>
-                    </a>
+                    </Link>
                 </li>
                 </ul>
             </div>

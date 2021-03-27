@@ -11,9 +11,8 @@ import Detail from "./Pages/DetailPage";
 const index = props => {
     return (
         <div>
-            {/* <Header />
-            <SideBar /> */}
-            <Detail />
+            <Header />
+            <SideBar />
             <Switch>
                 <Route path="/admin" exact>
                 </Route>
@@ -25,7 +24,7 @@ const index = props => {
                 </Route>
                 <Route path="/admin/:detail" exact>
                     <Detail />
-                </Route>
+                </Route>    
             </Switch>
         </div>
     );;

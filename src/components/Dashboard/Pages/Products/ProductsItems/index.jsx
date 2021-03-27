@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
-
-
+import { Link } from "react-router-dom";
 
 Product.propTypes = {
     product : PropTypes.object.isRequired,
@@ -34,7 +31,7 @@ function Product ({ product  }) {
                     {product.Info}
                 </p>
 
-                <button type="button" className="btn btn-primary btn-sm mt-2 mr-1">Chi Tiết</button>
+                <Link to="/admin/:detail"><button type="button" className="btn btn-primary btn-sm mt-2 mr-1">Chi Tiết</button></Link>
                 <button type="button" className="btn btn-danger btn-sm mt-2">Xóa</button>
 
                 <ul className="social-links list-inline mt-4 pt-2 mb-0">

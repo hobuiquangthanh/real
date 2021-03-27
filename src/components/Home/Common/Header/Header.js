@@ -36,10 +36,10 @@ const Header = props => {
           </div>
           <ul className="header__auth">
             <li className="mr-5">
-              <Link to={`${url}/signin`}>Signin</Link>
+              <Link to={`/login`}>Signin</Link>
             </li>
             <li className="mr-5">
-              <Link to={`${url}/register`}>Register</Link>
+              <Link to={`/login`}>Register</Link>
             </li>
           </ul>
 

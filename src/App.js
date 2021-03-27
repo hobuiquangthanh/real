@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Admin from "./components/Dashboard";
 import CollectionsPage from "./components/Home/Pages/CollectionsPage/CollectionsPage";
 import DetailPage from "./components/Home/Pages/DetailPage/DetailPage";
+import { Login } from "./components/Home/Auth/Login"
 import "./App.css";
 import './index.css';
 function App() {
@@ -25,7 +26,10 @@ function App() {
                 </Route>
                 <Route path="/admin">
                     <Admin />
-                </Route>     
+                </Route>
+                <Route path="/login">
+                    <Login />
+                </Route>
             </Switch>
         </BrowserRouter>
     );

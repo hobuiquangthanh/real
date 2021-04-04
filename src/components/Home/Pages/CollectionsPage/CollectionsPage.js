@@ -26,8 +26,6 @@ const CollectionsPage = props => {
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function(position) {
             setViewport(prevState => {
-                console.log(prevState, "prev");
-                console.log(position);
                 return {
                     ...prevState,
                     latitude: position.coords.latitude,

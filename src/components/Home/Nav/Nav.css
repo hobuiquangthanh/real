@@ -6,7 +6,8 @@
  .nav__list {
 	 display: flex;
 	 flex-flow: wrap;
-	 align-items: stretch;
+	 align-items: center;
+
 }
  .nav__list--filter {
 	 margin: 0 0.5rem;

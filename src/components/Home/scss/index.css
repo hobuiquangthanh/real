@@ -72,11 +72,10 @@ ul {
 button {
     outline: none;
     background: transparent;
-    border: 0.1rem solid rgba(209, 209, 213, );
+    border: 0.1rem solid rgba(209, 209, 213, 0.5 );
     color: #006aff;
     font-size: 1.2rem;
     font-weight: 400;
-    height: 100%;
     padding: 0 1rem;
     overflow: hidden;
     white-space: nowrap;

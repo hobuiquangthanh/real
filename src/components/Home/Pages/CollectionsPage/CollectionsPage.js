@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import ReactMapGL from "react-map-gl";
+
+import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // component
@@ -8,17 +9,21 @@ import Nav from "../../Nav/Nav";
 import Header from "../../Common/Header/Header";
 import Property from "../../Property/Property";
 
+import {API_KEY, MAPBOX_TOKEN} from '../../../../shared/_constant';
+
 // scss
 import "./CollectionsPage.css";
+import {useParams} from "react-router-dom";
+import axios from "axios";
 
 const CollectionsPage = props => {
     const [searchResult, setSearchResult] = useState(Array.from(new Array(20)));
-
+    const { collectionType } = useParams();
     const [viewport, setViewport] = useState({
         latitude: 45.4211,
         longitude: -75.6903,
         scrollZoom: true,
-        zoom: 9,
+        zoom: 15,
         width: "100%",
         height: "100%"
     });
@@ -36,11 +41,21 @@ const CollectionsPage = props => {
     }, []);
 
     useEffect(() => {
+        const fetchData = async () => {
+            const data = await axios.get(`${API_KEY}/nha`)
+            setSearchResult(data.data)
+        }
+        return fetchData();
+    }, [])
+
+    useEffect(() => {
         console.log(viewport);
     }, [viewport]);
 
     //
-
+    const handleMarkerClick = () => {
+        console.log('111')
+    }
     return (
         <div className="collections page">
             <Header />
@@ -51,13 +66,21 @@ const CollectionsPage = props => {
                     <ReactMapGL
                         {...viewport}
                         mapboxApiAccessToken={
-                            process.env.MIX_REACT_APP_MAPBOX_TOKEN
+                            MAPBOX_TOKEN
                         }
                         mapStyle="mapbox://styles/khanhnguyen3009/ckhonyzfk14ez1alak9oox2qe"
                         onViewportChange={viewport =>
                             setViewport(() => viewport)
                         }
-                    ></ReactMapGL>
+                    >
+                        <Marker onClick={handleMarkerClick} className="marker" offsetTop={-20} offsetLeft={-10} latitude={10.751955737869146} longitude={106.6716568534461}>
+                            <img src=" https://img.icons8.com/color/48/000000/marker.png" />
+                            <div class={"custom-popup"}>
+
+                            </div>
+                        </Marker>
+
+                    </ReactMapGL>
                 </div>
 
                 {/* search result */}

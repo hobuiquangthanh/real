@@ -7,3 +7,22 @@ button {
   background:transparent;
   padding: 5px;
 }
+
+.marker {
+    cursor: pointer !important;
+    position:relative;
+}
+
+.custom-popup {
+    position: absolute;
+    width:200px;
+    border-radius:5px;
+    height: 200px;
+    background:white;
+    left:0;
+    top:0;
+
+}
+
+
+

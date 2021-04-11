@@ -15,7 +15,7 @@ function App() {
                 <Route exact path="/">
                     {true ? <Redirect to="/home" /> : <Redirect to="/admin" />}
                 </Route>
-                <Route path={`/collections/:location`}>
+                <Route path={`/collections/:collectionType`}>
                     <CollectionsPage />
                 </Route>
                 <Route path="/detail/:propertyId">

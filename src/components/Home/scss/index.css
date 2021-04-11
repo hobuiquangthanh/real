@@ -50,8 +50,8 @@ ul {
     font-size: 1.6rem;
     padding: 2rem 1.6rem;
     border-radius: 5px;
-    color: #2a2a33;
     transition: 0.4s ease;
+    color: white;
 }
 .custom-input:focus {
     border: 0.1rem solid #006aff;

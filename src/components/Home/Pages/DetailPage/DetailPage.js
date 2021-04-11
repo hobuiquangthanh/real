@@ -8,6 +8,9 @@ import "./DetailPage.css";
 
 // components
 import Header from "../../Common/Header/Header";
+import {MAPBOX_TOKEN} from "../../../../shared/_constant";
+
+
 
 const DetailPage = props => {
     const [images, setImages] = useState([1, 2, 3, 4, 5, 6, 7]);
@@ -99,7 +102,7 @@ const DetailPage = props => {
                         <ReactMapGL
                             {...viewport}
                             mapboxApiAccessToken={
-                                process.env.MIX_REACT_APP_MAPBOX_TOKEN
+                                MAPBOX_TOKEN
                             }
                             mapStyle="mapbox://styles/khanhnguyen3009/ckhonyzfk14ez1alak9oox2qe"
                             onViewportChange={viewport =>

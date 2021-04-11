@@ -44,13 +44,13 @@ ul {
   margin-bottom: 4rem;
 }
 .custom-input {
-  border: 0.1px solid #d1d1d5;
+  border: 0.1px solid white;
   outline: none;
   cursor: text;
   font-size: 1.6rem;
   padding: 2rem 1.6rem;
   border-radius: 5px;
-  color: #2a2a33;
+  color: white;
   transition: 0.4s ease;
 }
 .custom-input:focus {

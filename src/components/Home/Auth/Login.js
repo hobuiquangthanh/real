@@ -1,12 +1,53 @@
 import React, { useState } from "react";
 import "./auth.css";
+import {API_KEY} from "../../../shared/_constant";
+import axios from 'axios';
 
 export const Login = () => {
   const [overlayLeft, setOverlayLeft] = useState(false);
-
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
   const handleSignInClick = () => {
     setOverlayLeft(false);
+    setEmail('');
+    setName('');
+    setPassword('');
   };
+
+  const onSignUp = async (e) => {
+    e.preventDefault()
+    if(!name || !email || !password) {
+      alert('empty value')
+      return
+    }
+    try {
+      const response = await axios.post(`${API_KEY}/khach_hang`, {
+        email,
+        mat_khau: password,
+        ho_ten: name
+      })
+      if(response.status === 200) {
+        window.open(`http://localhost:3000/admin/user/${response.data.id}`);
+      }
+    } catch(e) {
+      console.log(e)
+    }
+  }
+
+  const onSignIn = async (e) => {
+    e.preventDefault();
+    if(!email || !password) {
+      alert('empty')
+      return
+    }
+
+    try {
+      console.log('try login')
+    } catch(e) {
+      console.log(e)
+    }
+  }
 
   const handleSignUpClick = () => {
     setOverlayLeft(true);
@@ -35,10 +76,10 @@ export const Login = () => {
               </a>
             </div>
             <span>or use your email for registration</span>
-            <input type="text" name="name" placeholder="Name" />
-            <input type="email" name="email" placeholder="Email" />
-            <input type="password" name="password" placeholder="Password" />
-            <button className="btn-auth">SignUp</button>
+            <input type="text" name="name" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+            <input type="email" name="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
+            <input type="password" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
+            <button className="btn-auth" onClick={onSignUp}>SignUp</button>
           </form>
         </div>
         <div className="form-container sign-in-container">

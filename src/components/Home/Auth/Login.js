@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import "./auth.css";
 import {API_KEY} from "../../../shared/_constant";
 import axios from 'axios';
+import {useHistory} from "react-router-dom";
 
 export const Login = () => {
   const [overlayLeft, setOverlayLeft] = useState(false);
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const handleSignInClick = () => {
+  const history = useHistory()
+  const handleSignInClick = (e) => {
+    e.preventDefault();
     setOverlayLeft(false);
     setEmail('');
     setName('');
@@ -28,7 +31,7 @@ export const Login = () => {
         ho_ten: name
       })
       if(response.status === 200) {
-        window.open(`http://localhost:3000/admin/user/${response.data.id}`);
+        window.open(`http://localhost:3001/admin/user/${response.data.id}`);
       }
     } catch(e) {
       console.log(e)
@@ -37,13 +40,26 @@ export const Login = () => {
 
   const onSignIn = async (e) => {
     e.preventDefault();
+    console.log(email, password)
     if(!email || !password) {
       alert('empty')
       return
     }
 
     try {
-      console.log('try login')
+      const data = await axios.post(`${API_KEY}/khach_hang/login`, {
+        email,
+        mat_khau: password
+      })
+
+      if (data.data.khach_hang) {
+        localStorage.setItem("auth", JSON.stringify(data.data.khach_hang))
+        history.push("/home")
+      } else {
+        alert("sai ten dang nhap hoac mat khau")
+      }
+
+
     } catch(e) {
       console.log(e)
     }
@@ -97,11 +113,11 @@ export const Login = () => {
               </a>
             </div>
             <span>or use your account</span>
-            <input type="email" name="email" placeholder="Email" />
-            <input type="password" name="password" placeholder="Password" />
+            <input type="email"  value={email} onChange={e => setEmail(e.target.value)} name="email" placeholder="Email" />
+            <input type="password" name="password"  value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
             <a href="#">Forgot Your Password</a>
 
-            <button className="btn-auth">Sign In</button>
+            <button onClick={onSignIn} className="btn-auth">Sign In</button>
           </form>
         </div>
         <div className="overlay-container">
@@ -113,7 +129,7 @@ export const Login = () => {
               </p>
               <button
                 className="ghost btn-auth"
-                onClick={handleSignInClick}
+                onClick={(e) => handleSignInClick(e)}
                 id="signIn"
               >
                 Sign In

@@ -5,22 +5,34 @@ import { useHistory } from "react-router-dom";
 // scss
 import "./Property.css";
 
-const Property = props => {
+const Property = ({item, hideWish  }) => {
     const history = useHistory();
 
     const handeLinkToDetail = productId => {
         history.push(`/detail/${productId}`);
     };
+
+    const handleWishClick = (e, item) => {
+        e.stopPropagation();
+        const user = localStorage.getItem('auth');
+        if(user) {
+            history.push('/wishlish');
+        } else {
+            history.push('/login')
+        }
+    }
     return (
         <div
             className="property shadow"
-            onClick={() => handeLinkToDetail("someId")}
+            onClick={() => handeLinkToDetail(item.id_nha)}
         >
             <div className="property__top position-relative">
                 <span className="property__top-time position-absolute">
                     9 days ago
                 </span>
-                <i className="property__top-wish far fa-heart position-absolute"></i>
+                {
+                  !hideWish && <i onClick={(e) => handleWishClick(e,item)} className="property__top-wish far fa-heart position-absolute"></i>
+                }
                 <img
                     src="https://photos.zillowstatic.com/p_e/IS76c3x3zt75q30000000000.jpg"
                     alt="property image"
@@ -28,30 +40,30 @@ const Property = props => {
                 />
 
                 <p className="property__top-name position-absolute">
-                    PMI New Orleans
+                    { item.quan + '/ ' + item.thanh_pho }
                 </p>
             </div>
 
             <div className="property__information p-3">
                 <div className="property__information-heading d-flex justify-content-between">
                     <p className="property__information-price font-weight-bold">
-                        $950/mo
+                        { item.gia } VND
                     </p>
                     <ul className="property__information-detail d-flex">
                         <li className="px-3">
-                            <strong>1</strong> bd
+                            Phòng <strong>{item.so_phong}</strong>
                         </li>
                         <li className="px-3">
-                            <strong>1</strong> ba
+                            Toilet <strong>{item.so_toilet}</strong>
                         </li>
                         <li className="px-3">
-                            <strong>600</strong> sqft
+                            Diện Tích <strong>{item.dien_tich}</strong>
                         </li>
                     </ul>
                 </div>
 
                 <p className="property__information-address">
-                    3201 Cleary Ave #2, Metairie, LA 70002
+                    {`${item.so_nha} ${item.duong} Q.${item.quan} Tp.${item.thanh_pho}`}
                 </p>
                 <div className="property__information-type">
                     <span className="property__information-status"></span>

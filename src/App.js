@@ -8,6 +8,7 @@ import DetailPage from "./components/Home/Pages/DetailPage/DetailPage";
 import { Login } from "./components/Home/Auth/Login"
 import "./App.css";
 import './index.css';
+import Wishlish from "./components/Home/Pages/Wishlish/Wishlish";
 function App() {
     return (
         <BrowserRouter>
@@ -23,6 +24,9 @@ function App() {
                 </Route>
                 <Route path="/home">
                     <Home />
+                </Route>
+                <Route path="/wishlish">
+                    <Wishlish />
                 </Route>
                 <Route path="/admin">
                     <Admin />

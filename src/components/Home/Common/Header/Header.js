@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 
 // css
@@ -9,6 +9,16 @@ import { Link, useRouteMatch } from "react-router-dom";
 
 const Header = props => {
   const { url, path } = useRouteMatch();
+  const [user, setUser] = useState(null)
+  useEffect(() => {
+      const user = localStorage.getItem("auth")
+      setUser(user)
+  }, [user])
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    setUser(null)
+  }
 
   return (
     <header className="header py-3 shadow-sm">
@@ -16,16 +26,13 @@ const Header = props => {
         <div className="d-flex justify-content-between align-items-center flex-wrap">
           <ul className="header__links ">
             <li className="mr-5">
-              <Link to={`${url}`}>Home</Link>
+              <Link to={`/`}>Home</Link>
             </li>
             <li className="mr-5">
-              <Link to={`collections/buy`}>Buy</Link>
+              <Link to={`/collections/1`}>Buy</Link>
             </li>
             <li className="mr-5">
-              <Link to={`collections/sell`}>Sell</Link>
-            </li>
-            <li className="mr-5">
-              <Link to={`collections/rent`}>Rent</Link>
+              <Link to={`/collections/2`}>Rent</Link>
             </li>
           </ul>
 
@@ -34,14 +41,23 @@ const Header = props => {
           <div className="flex-fill text-center header__logo">
             <h2>Logo</h2>
           </div>
-          <ul className="header__auth">
-            <li className="mr-5">
-              <Link to={`/login`}>Signin</Link>
-            </li>
-            <li className="mr-5">
-              <Link to={`/login`}>Register</Link>
-            </li>
-          </ul>
+          {
+            !user ? (<ul className="header__auth">
+              <li className="mr-5">
+                <Link to={`/login`}>Signin</Link>
+              </li>
+              <li className="mr-5">
+                <Link to={`/login`}>Register</Link>
+              </li>
+            </ul>) : (<ul className="header__auth">
+              <li className="mr-5">
+                <Link to={`/wishlish`}>Your Wishlish</Link>
+              </li>
+              <li className="mr-5">
+                <a onClick={handleLogout} href="#">Logout</a>
+              </li>
+            </ul>)
+          }
 
           <i className="header__icons fas fa-user-friends"></i>
         </div>

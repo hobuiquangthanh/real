@@ -5,6 +5,7 @@ import Home from "./Home";
 import Admin from "./Dashboard";
 import CollectionsPage from "./Home/Pages/CollectionsPage/CollectionsPage";
 import DetailPage from "./Home/Pages/DetailPage/DetailPage";
+import Wishlish from "./Home/Pages/Wishlish/Wishlish";
 
 function App() {
     return (
@@ -21,6 +22,9 @@ function App() {
                 </Route>
                 <Route path="/home">
                     <Home />
+                </Route>
+                <Route path="/wishlish">
+                    <Wishlish />
                 </Route>
                 <Route path="/admin">
                     <Admin />

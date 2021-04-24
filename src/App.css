@@ -21,8 +21,29 @@ button {
     background:white;
     left:0;
     top:0;
-
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%,-50%);
+    transition: 0.4s ease;
+    border-radius: 10px;
+    z-index:100000;
 }
+
+.custom-popup img {
+    width:100%;
+    height: 90%;
+    object-fit: cover;
+}
+
+.custom-popup p {
+    text-align:center;
+}
+
+.marker:hover > .custom-popup {
+    visibility: visible;
+    opacity: 1;
+}
+
 
 
 

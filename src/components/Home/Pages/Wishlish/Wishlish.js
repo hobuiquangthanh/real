@@ -14,11 +14,11 @@ import Property from "../../Property/Property";
 import {API_KEY, MAPBOX_TOKEN} from '../../../../shared/_constant';
 
 // scss
-import "./CollectionsPage.css";
+import "../CollectionsPage/CollectionsPage.css";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 
-const CollectionsPage = props => {
+const WishlishPage = props => {
     let history = useHistory();
 
     const [searchResult, setSearchResult] = useState(Array.from(new Array(20)));
@@ -50,7 +50,7 @@ const CollectionsPage = props => {
         const fetchData = async () => {
             try {
                 setLoading(true)
-                const data = await axios.get(`${API_KEY}/nha/show_index?hinh_thuc=${collectionType}`)
+                const data = await axios.get(`${API_KEY}/nha`)
                 setSearchResult(data.data.nha)
                 console.log(data)
                 setLoading(false)
@@ -61,7 +61,7 @@ const CollectionsPage = props => {
             }
         }
         return fetchData();
-    }, [collectionType])
+    }, [])
 
     // useEffect(() => {
     // }, [viewport]);
@@ -76,11 +76,11 @@ const CollectionsPage = props => {
             <Nav />
             <div className="collections__content">
                 {
-                   loading && (
-                       <div style={{width: '10rem', height: '10rem', margin: '0 auto'}} className="spinner-border text-primary" role="status">
-                           <span className="sr-only">Loading...</span>
-                       </div>
-                   )
+                    loading && (
+                        <div style={{width: '10rem', height: '10rem', margin: '0 auto'}} className="spinner-border text-primary" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    )
                 }
                 {
                     !loading && (
@@ -162,7 +162,7 @@ const CollectionsPage = props => {
                                                     key={index}
                                                     className="search-result__item my-2"
                                                 >
-                                                    <Property item={item} />
+                                                    <Property hideWish={true} item={item} />
                                                 </div>
                                             );
                                         })}
@@ -178,6 +178,6 @@ const CollectionsPage = props => {
     );
 };
 
-CollectionsPage.propTypes = {};
+WishlishPage.propTypes = {};
 
-export default CollectionsPage;
+export default WishlishPage;

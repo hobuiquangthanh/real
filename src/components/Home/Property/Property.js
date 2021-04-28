@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-
+import axios from 'axios'
 // scss
 import "./Property.css";
+import {API_KEY} from "../../../shared/_constant";
 
 const Property = ({item, hideWish  }) => {
     const history = useHistory();
@@ -12,11 +13,20 @@ const Property = ({item, hideWish  }) => {
         history.push(`/detail/${productId}`);
     };
 
-    const handleWishClick = (e, item) => {
+    const handleWishClick = async (e, item) => {
         e.stopPropagation();
-        const user = localStorage.getItem('auth');
+        const user = JSON.parse(localStorage.getItem('auth'));
         if(user) {
-            history.push('/wishlish');
+            const body = {
+                id_nha: item.id_nha,
+                id_khach_hang: user.id
+            }
+            try {
+                await axios.post(`${API_KEY}/nha/yeu_thich`, body)
+                alert("them thanh cong")
+            } catch(e) {
+                console.log(e)
+            }
         } else {
             history.push('/login')
         }
@@ -49,7 +59,7 @@ const Property = ({item, hideWish  }) => {
                     <p className="property__information-price font-weight-bold">
                         { item.gia } VND
                     </p>
-                    <ul className="property__information-detail d-flex">
+                    <ul className="property__information-detail align-items-center d-flex">
                         <li className="px-3">
                             Phòng <strong>{item.so_phong}</strong>
                         </li>

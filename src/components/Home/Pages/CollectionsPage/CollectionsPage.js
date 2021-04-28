@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, {useState, useEffect, Fragment, useLayoutEffect, useRef} from "react";
 import PropTypes from "prop-types";
 
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
@@ -20,10 +20,14 @@ import axios from "axios";
 
 const CollectionsPage = props => {
     let history = useHistory();
+    const LIMIT = 10
 
     const [searchResult, setSearchResult] = useState(Array.from(new Array(20)));
+    const [realData, setRealData] = useState([])
     const [loading, setLoading] = useState(true);
+    const [loadmore, setLoadmore] = useState(false);
     const { collectionType } = useParams();
+    const [page, setPage] = useState(1)
     const [viewport, setViewport] = useState({
         latitude: 45.4211,
         longitude: -75.6903,
@@ -51,8 +55,9 @@ const CollectionsPage = props => {
             try {
                 setLoading(true)
                 const data = await axios.get(`${API_KEY}/nha/show_index?hinh_thuc=${collectionType}`)
-                setSearchResult(data.data.nha)
+                setRealData(data.data.nha)
                 console.log(data)
+                setSearchResult([...data.data.nha].splice(page - 1, LIMIT))
                 setLoading(false)
 
             } catch(e) {
@@ -70,6 +75,34 @@ const CollectionsPage = props => {
     const handleMarkerClick = (item) => {
         history.push(`/detail/${item.id_nha}`);
     }
+
+    const handleLoadMore = () => {
+        setPage(page + 1)
+    }
+
+    const firstUpdate = useRef(true)
+    useLayoutEffect(() => {
+        if(firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+        setLoadmore(true)
+        const data = setTimeout(() => {
+            const dataFetch = [...realData].splice(searchResult.length, LIMIT)
+            const data = searchResult.concat([...dataFetch]);
+            setSearchResult(data)
+            console.log(dataFetch)
+            setViewport({
+                ...viewport,
+                latitude: Number(dataFetch[0].lat),
+                longitude: Number(dataFetch[0].lon)
+            })
+            setLoadmore(false)
+        }, 1500)
+
+        return () => { clearTimeout(data) }
+
+    }, [page])
     return (
         <div className="collections page">
             <Header />
@@ -142,16 +175,7 @@ const CollectionsPage = props => {
                                     </h3>
 
                                     <div className="d-flex justify-content-between">
-                                        <p>1,557 result</p>
-                                        <div className="search-result__sort">
-                                <span className="h3 font-weight-bold">
-                                    Sort By:{" "}
-                                </span>
-                                            <div className="search-result__select border px-2 d-inline-block">
-                                                <span>Newest</span>
-                                                <i className="ml-2 fas fa-chevron-down"></i>
-                                            </div>
-                                        </div>
+                                        <p>{ realData.length } Kết quả</p>
                                     </div>
 
                                     {/* properties */}
@@ -168,6 +192,23 @@ const CollectionsPage = props => {
                                         })}
                                     </div>
                                     {/* end properties */}
+
+                                    {
+                                        loadmore
+                                            ?
+                                            (
+                                                <div style={{width: '5rem', height: '5rem', margin: '0 auto', display: 'block'}} className="spinner-border text-primary" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                            )
+                                            :
+                                            (
+                                                <div className="loadmore-section mt-3 mx-auto text-center">
+                                                    <p className="mb-2">Bạn đã xem {searchResult.length} trên {realData.length} bất động sản</p>
+                                                    { searchResult.length !== realData.length && <button onClick={handleLoadMore} className="loadmore-btn mx-auto">Load More</button> }
+                                                </div>
+                                            )
+                                    }
                                 </div>
                             </div>
                         </Fragment>

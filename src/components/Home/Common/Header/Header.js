@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 // css
@@ -11,8 +11,9 @@ const Header = props => {
   const { url, path } = useRouteMatch();
   const [user, setUser] = useState(null)
   useEffect(() => {
-      const user = localStorage.getItem("auth")
-      setUser(user)
+    const user = localStorage.getItem("auth")
+    setUser(JSON.parse(user))
+    console.log(user);
   }, [user])
 
   const handleLogout = () => {
@@ -51,7 +52,15 @@ const Header = props => {
               </li>
             </ul>) : (<ul className="header__auth">
               <li className="mr-5">
-                <Link to={`/wishlish`}>Your Wishlish</Link>
+                <div className="dropdown">
+                  <span>
+                    {user.ho_ten}
+                  </span>
+                  <div className="dropdown-content">
+                    <p className="p-link"><Link to={`/wishlish`}>Your Wishlish</Link></p>
+                    <p className="p-link"><Link to={`/admin`}>Dashboard</Link></p>
+                  </div>
+                </div>
               </li>
               <li className="mr-5">
                 <a onClick={handleLogout} href="#">Logout</a>

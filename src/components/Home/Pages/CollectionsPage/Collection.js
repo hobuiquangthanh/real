@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, {useState, useEffect, Fragment, useLayoutEffect, useRef} from "react";
 import PropTypes from "prop-types";
 
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
@@ -14,16 +14,20 @@ import Property from "../../Property/Property";
 import {API_KEY, MAPBOX_TOKEN} from '../../../../shared/_constant';
 
 // scss
-import "../CollectionsPage/CollectionsPage.css";
+import "./CollectionsPage.css";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 
-const WishlishPage = props => {
+const CollectionsPage = props => {
     let history = useHistory();
+    const LIMIT = 10
 
     const [searchResult, setSearchResult] = useState(Array.from(new Array(20)));
+    const [realData, setRealData] = useState([])
     const [loading, setLoading] = useState(true);
+    const [loadmore, setLoadmore] = useState(false);
     const { collectionType } = useParams();
+    const [page, setPage] = useState(1)
     const [viewport, setViewport] = useState({
         latitude: 45.4211,
         longitude: -75.6903,
@@ -49,35 +53,12 @@ const WishlishPage = props => {
 
         const fetchData = async () => {
             try {
-                const auth = JSON.parse(localStorage.getItem('auth'));
                 setLoading(true)
-                const data = await axios.get(`${API_KEY}/nha/yeu_thich/${auth.id}`)
-                const realData = await axios.get(`${API_KEY}/nha`)
-                if(data.data.status === 'error') {
-                    setSearchResult(realData.data.nha)
-                    setLoading(false)
-                    return
-                }
-
-                console.log(data.data.nha)
-                // const wishlish = [...realData.data.nha].filter(item => {
-                //     for (const itemElement of data.data.nha) {
-                //         console.log(itemElement)
-                //         return item.id_nha === itemElement.id_nha
-                //     }
-                // })
-
-                const wishlish = [...data.data.nha].map(item => {
-                    return realData.data.nha.find(real => real.id_nha === item.id_nha)
-                })
-                console.log(wishlish)
-                setSearchResult(wishlish)
-                setViewport((prevState => ({
-                    ...prevState,
-                    latitude: Number(wishlish[0].lat),
-                    longitude: Number(wishlish[0].lon)
-                })))
+                const data = await axios.get(`${API_KEY}/nha`)
+                setRealData(data.data.nha)
+                setSearchResult([...data.data.nha].splice(page - 1, LIMIT))
                 setLoading(false)
+
             } catch(e) {
                 console.log(e)
             } finally {
@@ -93,6 +74,34 @@ const WishlishPage = props => {
     const handleMarkerClick = (item) => {
         history.push(`/detail/${item.id_nha}`);
     }
+
+    const handleLoadMore = () => {
+        setPage(page + 1)
+    }
+
+    const firstUpdate = useRef(true)
+    useLayoutEffect(() => {
+        if(firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+        setLoadmore(true)
+        const data = setTimeout(() => {
+            const dataFetch = [...realData].splice(searchResult.length, LIMIT)
+            const data = searchResult.concat([...dataFetch]);
+            setSearchResult(data)
+            console.log(dataFetch)
+            setViewport({
+                ...viewport,
+                latitude: Number(dataFetch[0].lat),
+                longitude: Number(dataFetch[0].lon)
+            })
+            setLoadmore(false)
+        }, 1500)
+
+        return () => { clearTimeout(data) }
+
+    }, [page])
     return (
         <div className="collections page">
             <Header />
@@ -165,7 +174,7 @@ const WishlishPage = props => {
                                     </h3>
 
                                     <div className="d-flex justify-content-between">
-                                        <p>{searchResult.length} Result</p>
+                                        <p>{ realData.length } Kết quả</p>
                                     </div>
 
                                     {/* properties */}
@@ -176,12 +185,29 @@ const WishlishPage = props => {
                                                     key={index}
                                                     className="search-result__item my-2"
                                                 >
-                                                    <Property hideWish={true} item={item} />
+                                                    <Property item={item} />
                                                 </div>
                                             );
                                         })}
                                     </div>
                                     {/* end properties */}
+
+                                    {
+                                        loadmore
+                                            ?
+                                            (
+                                                <div style={{width: '5rem', height: '5rem', margin: '0 auto', display: 'block'}} className="spinner-border text-primary" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                            )
+                                            :
+                                            (
+                                                <div className="loadmore-section mt-3 mx-auto text-center">
+                                                    <p className="mb-2">Bạn đã xem {searchResult.length} trên {realData.length} bất động sản</p>
+                                                    { searchResult.length !== realData.length && <button onClick={handleLoadMore} className="loadmore-btn mx-auto">Load More</button> }
+                                                </div>
+                                            )
+                                    }
                                 </div>
                             </div>
                         </Fragment>
@@ -192,6 +218,6 @@ const WishlishPage = props => {
     );
 };
 
-WishlishPage.propTypes = {};
+CollectionsPage.propTypes = {};
 
-export default WishlishPage;
+export default CollectionsPage;

@@ -13,8 +13,7 @@ const Header = props => {
   useEffect(() => {
     const user = localStorage.getItem("auth")
     setUser(JSON.parse(user))
-    console.log(user);
-  }, [user])
+  }, [])
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
@@ -29,11 +28,14 @@ const Header = props => {
             <li className="mr-5">
               <Link to={`/`}>Home</Link>
             </li>
+            {/*<li className="mr-5">*/}
+            {/*  <Link to={`/collections/1`}>Buy</Link>*/}
+            {/*</li>*/}
+            {/*<li className="mr-5">*/}
+            {/*  <Link to={`/collections/2`}>Rent</Link>*/}
+            {/*</li>*/}
             <li className="mr-5">
-              <Link to={`/collections/1`}>Buy</Link>
-            </li>
-            <li className="mr-5">
-              <Link to={`/collections/2`}>Rent</Link>
+              <Link to={`/collections`}>Nhà</Link>
             </li>
           </ul>
 

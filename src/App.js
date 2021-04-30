@@ -9,6 +9,7 @@ import { Login } from "./components/Home/Auth/Login"
 import "./App.css";
 import './index.css';
 import Wishlish from "./components/Home/Pages/Wishlish/Wishlish";
+import Collection from "./components/Home/Pages/CollectionsPage/Collection";
 function App() {
     return (
         <BrowserRouter>
@@ -19,13 +20,16 @@ function App() {
                 <Route path={`/collections/:collectionType`}>
                     <CollectionsPage />
                 </Route>
+                <Route exact path="/collections">
+                    <Collection />
+                </Route>
                 <Route path="/detail/:propertyId">
                     <DetailPage />
                 </Route>
                 <Route path="/home">
                     <Home />
                 </Route>
-                <Route path="/wishlish">
+                <Route exact path="/wishlish">
                     <Wishlish />
                 </Route>
                 <Route path="/admin">

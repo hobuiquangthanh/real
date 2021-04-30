@@ -13,8 +13,9 @@ const Header = props => {
   useEffect(() => {
     const user = localStorage.getItem("auth")
     setUser(JSON.parse(user))
+    // const userID = JSON.stringify(user)
     console.log(user);
-  }, [user])
+  }, [])
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
@@ -58,7 +59,7 @@ const Header = props => {
                   </span>
                   <div className="dropdown-content">
                     <p className="p-link"><Link to={`/wishlish`}>Your Wishlish</Link></p>
-                    <p className="p-link"><Link to={`/admin`}>Dashboard</Link></p>
+                    <p className="p-link"><a href={`http://localhost:3000/admin/` + `${user.id}`}>Dashboard</a></p>
                   </div>
                 </div>
               </li>
@@ -71,7 +72,7 @@ const Header = props => {
           <i className="header__icons fas fa-user-friends"></i>
         </div>
       </nav>
-    </header>
+    </header >
   );
 };
 

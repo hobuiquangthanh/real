@@ -46,6 +46,9 @@
   .p-link {
     padding: 10px;
   }
+  .p-hidden {
+    display: none;
+  }
   .dropdown:hover .dropdown-content {
     display: block;
   }

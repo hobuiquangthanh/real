@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./auth.css";
-import {API_KEY} from "../../../shared/_constant";
+import { API_KEY } from "../../../shared/_constant";
 import axios from 'axios';
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export const Login = () => {
   const [overlayLeft, setOverlayLeft] = useState(false);
@@ -20,7 +20,7 @@ export const Login = () => {
 
   const onSignUp = async (e) => {
     e.preventDefault()
-    if(!name || !email || !password) {
+    if (!name || !email || !password) {
       alert('empty value')
       return
     }
@@ -30,10 +30,10 @@ export const Login = () => {
         mat_khau: password,
         ho_ten: name
       })
-      if(response.status === 200) {
+      if (response.status === 200) {
         window.open(`http://localhost:3001/admin/user/${response.data.id}`);
       }
-    } catch(e) {
+    } catch (e) {
       console.log(e)
     }
   }
@@ -41,7 +41,7 @@ export const Login = () => {
   const onSignIn = async (e) => {
     e.preventDefault();
     console.log(email, password)
-    if(!email || !password) {
+    if (!email || !password) {
       alert('empty')
       return
     }
@@ -60,7 +60,7 @@ export const Login = () => {
       }
 
 
-    } catch(e) {
+    } catch (e) {
       console.log(e)
     }
   }
@@ -72,9 +72,8 @@ export const Login = () => {
   return (
     <div className="login">
       <div
-        className={`custom-container ${
-          overlayLeft ? "right-panel-active" : ""
-        }`}
+        className={`custom-container ${overlayLeft ? "right-panel-active" : ""
+          }`}
         id="container"
       >
         <div className="form-container sign-up-container">
@@ -113,8 +112,8 @@ export const Login = () => {
               </a>
             </div>
             <span>or use your account</span>
-            <input type="email"  value={email} onChange={e => setEmail(e.target.value)} name="email" placeholder="Email" />
-            <input type="password" name="password"  value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} name="email" placeholder="Email" />
+            <input type="password" name="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
             <a href="#">Forgot Your Password</a>
 
             <button onClick={onSignIn} className="btn-auth">Sign In</button>

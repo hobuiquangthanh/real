@@ -9,6 +9,8 @@ import { Login } from "./components/Home/Auth/Login"
 import "./App.css";
 import './index.css';
 import Wishlish from "./components/Home/Pages/Wishlish/Wishlish";
+import ChangePassword from "./components/Home/Auth/ChangePassword";
+import ForgotPassword from "./components/Home/Auth/ForgotPassword";
 function App() {
     return (
         <BrowserRouter>
@@ -34,6 +36,12 @@ function App() {
                 <Route path="/login">
                     <Login />
                 </Route>
+                <Route path="/changepass/:id">
+                    <ChangePassword />
+                </Route>
+                <Route path="/forgotpass/:id">
+                    <ForgotPassword />
+                </Route>
             </Switch>
         </BrowserRouter>
     );
@@ -42,5 +50,5 @@ function App() {
 export default App;
 
 if (document.getElementById("app")) {
-  ReactDOM.render(<App />, document.getElementById("app"));
+    ReactDOM.render(<App />, document.getElementById("app"));
 }

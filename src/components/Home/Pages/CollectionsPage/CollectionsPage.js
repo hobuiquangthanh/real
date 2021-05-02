@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import ReactMapGL, { Marker, Popup, FlyToInterpolator } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useHistory } from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 
 // component
@@ -18,14 +18,22 @@ import "./CollectionsPage.css";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 
+
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
+
 const CollectionsPage = props => {
     let history = useHistory();
+    let query = useQuery();
     const LIMIT = 10
 
     const [searchResult, setSearchResult] = useState(Array.from(new Array(20)));
     const [realData, setRealData] = useState([])
     const [loading, setLoading] = useState(true);
     const [loadmore, setLoadmore] = useState(false);
+    const [searchStr, setSearchStr] = useState(null)
     const { collectionType } = useParams();
     const [page, setPage] = useState(1)
     const [viewport, setViewport] = useState({
@@ -38,6 +46,8 @@ const CollectionsPage = props => {
     });
 
     useEffect(() => {
+        const search = query.get('search')
+        if(search) return
         navigator.geolocation.getCurrentPosition(function(position) {
             setViewport(prevState => {
                 return {
@@ -51,13 +61,35 @@ const CollectionsPage = props => {
     }, []);
 
     useEffect(() => {
-
+        const search = query.get('search')
         const fetchData = async () => {
             try {
                 setLoading(true)
                 const data = await axios.get(`${API_KEY}/nha/show_index?hinh_thuc=${collectionType}`)
+                if(search) {
+                    const searchData = [...data.data.nha].filter((item) => {
+                        const district = item.quan.toLowerCase()
+                        if(district === search.toLowerCase()) {
+                            return item
+                        }
+                    })
+
+                    setRealData(searchData)
+                    setSearchResult([...searchData].splice(0, LIMIT))
+                    setSearchStr(search)
+                    setLoading(false)
+                    setViewport(prevState => {
+                        return {
+                            ...prevState,
+                            latitude: Number(searchData[0].lat),
+                            longitude: Number(searchData[0].lon)
+
+                        };
+                    });
+                    return
+                }
+                setSearchStr(null)
                 setRealData(data.data.nha)
-                console.log(data)
                 setSearchResult([...data.data.nha].splice(page - 1, LIMIT))
                 setLoading(false)
 
@@ -104,10 +136,13 @@ const CollectionsPage = props => {
         return () => { clearTimeout(data) }
 
     }, [page])
+    const onSearch = (search) => {
+        window.location = `http://localhost:3000/collections/${collectionType}?search=${search}`
+    }
     return (
         <div className="collections page">
             <Header />
-            <Nav />
+            <Nav handleSearch={onSearch} />
             <div className="collections__content">
                 {
                    loading && (

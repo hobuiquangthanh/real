@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import ReactMapGL, { Marker, Popup, FlyToInterpolator } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 
 // component
@@ -18,8 +18,13 @@ import "./CollectionsPage.css";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 const CollectionsPage = props => {
     let history = useHistory();
+    let query = useQuery();
     const LIMIT = 10
     const SKIP = 10
 
@@ -40,6 +45,9 @@ const CollectionsPage = props => {
     });
 
     useEffect(() => {
+        const search = query.get('search')
+
+        if(search) return
         navigator.geolocation.getCurrentPosition(function(position) {
             setViewport(prevState => {
                 return {
@@ -66,11 +74,36 @@ const CollectionsPage = props => {
         }
     }
 
+    //fetch home
     useEffect(() => {
+        const search = query.get('search')
         const fetchData = async () => {
             try {
                 setLoading(true)
                 const data = await axios.get(`${API_KEY}/nha`)
+                if(search) {
+                    const searchData = [...data.data.nha].filter((item) => {
+                        const district = item.quan.toLowerCase()
+                        if(district === search.toLowerCase()) {
+                            return item
+                        }
+                    })
+
+                    setRealData(searchData)
+                    setSearchResult([...searchData].splice(0, LIMIT))
+                    setSearchStr(search)
+                    setLoading(false)
+                    setViewport(prevState => {
+                        return {
+                            ...prevState,
+                            latitude: Number(searchData[0].lat),
+                            longitude: Number(searchData[0].lon)
+
+                        };
+                    });
+                    return
+                }
+                setSearchResult(null)
                 setRealData(data.data.nha)
                 setSearchResult([...data.data.nha].splice(page - 1, LIMIT))
                 setLoading(false)
@@ -99,7 +132,6 @@ const CollectionsPage = props => {
 
     const firstUpdate = useRef(true)
     useLayoutEffect(() => {
-        console.log('test')
         if(firstUpdate.current) {
             console.log('first update')
             firstUpdate.current = false;
@@ -125,31 +157,33 @@ const CollectionsPage = props => {
 
     }, [page])
 
+
+
     const onSearch = async (search) => {
-        // window.location = `http://localhost:3000/collections?search=${search}`
-        if(!search) {
-            setPage(1)
-            await fetchData();
-            return
-        }
-        const data = await fetchData()
-        const searchData = [...data].filter((item) => {
-            const district = item.quan.toLowerCase()
-            if(district === search.toLowerCase()) {
-                return item
-            }
-        })
-        setSearchStr(search)
-        setSearchResult([...searchData].splice(0, LIMIT))
-        setRealData(searchData)
-        setPage(1)
-        if(searchData.length > 0) {
-            setViewport({
-                ...viewport,
-                latitude: Number(searchData[0].lat),
-                longitude: Number(searchData[0].lon)
-            })
-        }
+        window.location = `http://localhost:3000/collections?search=${search}`
+        // if(!search) {
+        //     setPage(1)
+        //     await fetchData();
+        //     return
+        // }
+        // const data = await fetchData()
+        // const searchData = [...data].filter((item) => {
+        //     const district = item.quan.toLowerCase()
+        //     if(district === search.toLowerCase()) {
+        //         return item
+        //     }
+        // })
+        // setSearchStr(search)
+        // setSearchResult([...searchData].splice(0, LIMIT))
+        // setRealData(searchData)
+        // setPage(1)
+        // if(searchData.length > 0) {
+        //     setViewport({
+        //         ...viewport,
+        //         latitude: Number(searchData[0].lat),
+        //         longitude: Number(searchData[0].lon)
+        //     })
+        // }
     }
     return (
         <div className="collections page">
@@ -218,7 +252,7 @@ const CollectionsPage = props => {
                             {/* search result */}
                             <div className="collections__content-result">
                                 <div className="search-result p-3">
-                                    { searchStr === null &&  <div className="d-flex justify-content-between">
+                                    { searchStr !== null &&  <div className="d-flex justify-content-between">
                                         <p>{ realData.length } Kết quả</p>
                                     </div>  }
 

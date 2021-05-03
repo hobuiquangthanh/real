@@ -13,8 +13,6 @@ const Header = props => {
   useEffect(() => {
     const user = localStorage.getItem("auth")
     setUser(JSON.parse(user))
-    // const userID = JSON.stringify(user)
-    console.log(user);
   }, [])
 
   const handleLogout = () => {
@@ -30,11 +28,14 @@ const Header = props => {
             <li className="mr-5">
               <Link to={`/`}>Home</Link>
             </li>
+            {/*<li className="mr-5">*/}
+            {/*  <Link to={`/collections/1`}>Buy</Link>*/}
+            {/*</li>*/}
+            {/*<li className="mr-5">*/}
+            {/*  <Link to={`/collections/2`}>Rent</Link>*/}
+            {/*</li>*/}
             <li className="mr-5">
-              <Link to={`/collections/1`}>Buy</Link>
-            </li>
-            <li className="mr-5">
-              <Link to={`/collections/2`}>Rent</Link>
+              <Link to={`/collections`}>Nhà</Link>
             </li>
           </ul>
 
@@ -59,7 +60,7 @@ const Header = props => {
                   </span>
                   <div className="dropdown-content">
                     <p className="p-link"><Link to={`/wishlish`}>Your Wishlish</Link></p>
-                    <p className="p-link"><a href={`http://localhost:3000/admin/` + `${user.id}`}>Dashboard</a></p>
+                    <p className="p-link"><a href={`http://localhost:3000/admin/dashboard?user=` + `${user.id}`}>Dashboard</a></p>
                   </div>
                 </div>
               </li>

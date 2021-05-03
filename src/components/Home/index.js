@@ -21,7 +21,6 @@ const Index = () => {
 
 
   const { path } = useRouteMatch;
-  console.log(path);
 
   const [hideOnScroll, setHideOnScroll] = useState(false);
 

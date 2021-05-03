@@ -1,7 +1,7 @@
 import React, {useState, useEffect, Fragment, useLayoutEffect, useRef} from "react";
 import PropTypes from "prop-types";
 
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import ReactMapGL, { Marker, Popup, FlyToInterpolator } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useHistory } from "react-router-dom";
 
@@ -43,7 +43,8 @@ const CollectionsPage = props => {
                 return {
                     ...prevState,
                     latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
+                    longitude: position.coords.longitude,
+
                 };
             });
         });

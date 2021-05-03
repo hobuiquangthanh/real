@@ -46,7 +46,7 @@ const WishlishPage = props => {
     }, []);
 
     useEffect(() => {
-
+        console.log('wishlish')
         const fetchData = async () => {
             try {
                 const auth = JSON.parse(localStorage.getItem('auth'));
@@ -54,23 +54,15 @@ const WishlishPage = props => {
                 const data = await axios.get(`${API_KEY}/nha/yeu_thich/${auth.id}`)
                 const realData = await axios.get(`${API_KEY}/nha`)
                 if(data.data.status === 'error') {
-                    setSearchResult(realData.data.nha)
+                    setSearchResult([])
                     setLoading(false)
                     return
                 }
 
-                console.log(data.data.nha)
-                // const wishlish = [...realData.data.nha].filter(item => {
-                //     for (const itemElement of data.data.nha) {
-                //         console.log(itemElement)
-                //         return item.id_nha === itemElement.id_nha
-                //     }
-                // })
 
                 const wishlish = [...data.data.nha].map(item => {
                     return realData.data.nha.find(real => real.id_nha === item.id_nha)
                 })
-                console.log(wishlish)
                 setSearchResult(wishlish)
                 setViewport((prevState => ({
                     ...prevState,
@@ -79,7 +71,7 @@ const WishlishPage = props => {
                 })))
                 setLoading(false)
             } catch(e) {
-                console.log(e)
+                console.log(e, '1111111')
             } finally {
             }
         }

@@ -76,9 +76,9 @@ const Property = ({item, hideWish  }) => {
                     {`${item.so_nha} ${item.duong} Q.${item.quan} Tp.${item.thanh_pho}`}
                 </p>
                 <div className="property__information-type">
-                    <span className="property__information-status"></span>
+                    <span className="property__information-status" style={{background: item.hinh_thuc === 1 ? 'red' : 'blue'}}></span>
                     <span className="property__information-text-status">
-                        Apartment for rent
+                        { item.hinh_thuc === 1 ? 'Nhà bán' : 'Nhà cho thuê' }
                     </span>
                 </div>
             </div>

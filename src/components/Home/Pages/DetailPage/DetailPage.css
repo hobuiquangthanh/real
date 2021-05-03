@@ -54,4 +54,8 @@
  .detail__detail--header .socials {
 	 cursor: pointer;
 }
+
+ .socials a {
+	 color: #006aff;
+ }
  

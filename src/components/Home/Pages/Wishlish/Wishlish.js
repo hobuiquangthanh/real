@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { useHistory } from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 
 // component
@@ -18,8 +18,13 @@ import "../CollectionsPage/CollectionsPage.css";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
+
 const WishlishPage = props => {
     let history = useHistory();
+    let query = useQuery();
 
     const [searchResult, setSearchResult] = useState(Array.from(new Array(20)));
     const [loading, setLoading] = useState(true);
@@ -32,21 +37,23 @@ const WishlishPage = props => {
         width: "100%",
         height: "100%"
     });
+    //
+    // useEffect(() => {
+    //     navigator.geolocation.getCurrentPosition(function(position) {
+    //         setViewport(prevState => {
+    //             return {
+    //                 ...prevState,
+    //                 latitude: position.coords.latitude,
+    //                 longitude: position.coords.longitude
+    //             };
+    //         });
+    //     });
+    // }, []);
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            setViewport(prevState => {
-                return {
-                    ...prevState,
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
-                };
-            });
-        });
-    }, []);
+        const type = query.get('type');
+        const search = query.get('search');
 
-    useEffect(() => {
-        console.log('wishlish')
         const fetchData = async () => {
             try {
                 const auth = JSON.parse(localStorage.getItem('auth'));
@@ -63,7 +70,68 @@ const WishlishPage = props => {
                 const wishlish = [...data.data.nha].map(item => {
                     return realData.data.nha.find(real => real.id_nha === item.id_nha)
                 })
+                if(type && !search) {
+                    let searchResult = [...wishlish].filter(item => {
+                        return item.hinh_thuc === Number(type)
+                    })
+
+                    setSearchResult(searchResult)
+                    if (searchResult.length === 0) {
+                        setLoading(false)
+                        return;
+                    }
+                    setViewport((prevState => ({
+                        ...prevState,
+                        latitude: Number(searchResult[0].lat),
+                        longitude: Number(searchResult[0].lon)
+                    })))
+                    setLoading(false)
+                    return
+                }
+
+                if (type && search) {
+                    let searchResult = [...wishlish].filter(item => {
+                        if (item.hinh_thuc === Number(type) && item.quan.toLowerCase() === search.toLowerCase()) {
+                            return item
+                        }
+                         return false
+                    })
+                    setSearchResult(searchResult)
+                    if (searchResult.length === 0) {
+                        setLoading(false)
+                        return;
+                    }
+                    setViewport((prevState => ({
+                        ...prevState,
+                        latitude: Number(searchResult[0].lat),
+                        longitude: Number(searchResult[0].lon)
+                    })))
+                    return
+                }
+                if(!type && search) {
+                    let searchResult = [...wishlish].filter(item => {
+                        if (item.quan.toLowerCase() === search.toLowerCase()) {
+                            return item
+                        }
+                        return false
+                    })
+                    setSearchResult(searchResult)
+                    if (searchResult.length === 0) {
+                        setLoading(false)
+                        return;
+                    }
+                    setViewport((prevState => ({
+                        ...prevState,
+                        latitude: Number(searchResult[0].lat),
+                        longitude: Number(searchResult[0].lon)
+                    })))
+                    return
+                }
                 setSearchResult(wishlish)
+                if (searchResult.length === 0) {
+                    setLoading(false)
+                    return;
+                }
                 setViewport((prevState => ({
                     ...prevState,
                     latitude: Number(wishlish[0].lat),
@@ -85,10 +153,19 @@ const WishlishPage = props => {
     const handleMarkerClick = (item) => {
         history.push(`/detail/${item.id_nha}`);
     }
+
+    const onSearch = (search) => {
+        const type = query.get('type');
+        if(type) {
+            window.location = `http://localhost:3000/wishlish?search=${search}&type=${type}`
+            return
+        }
+        window.location = `http://localhost:3000/collections/${collectionType}?search=${search}`
+    }
     return (
         <div className="collections page">
             <Header />
-            <Nav />
+            <Nav handleSearch={onSearch} isWish={true} />
             <div className="collections__content">
                 {
                     loading && (
@@ -153,11 +230,11 @@ const WishlishPage = props => {
                             <div className="collections__content-result">
                                 <div className="search-result p-3">
                                     <h3 className="search-result__title">
-                                        TPHCM - District 2 Listing
+                                        Wishlish của bạn
                                     </h3>
 
                                     <div className="d-flex justify-content-between">
-                                        <p>{searchResult.length} Result</p>
+                                        <p>{ searchResult.length } Wishlish item</p>
                                     </div>
 
                                     {/* properties */}

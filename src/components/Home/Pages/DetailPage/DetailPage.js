@@ -10,14 +10,16 @@ import "./DetailPage.css";
 import Header from "../../Common/Header/Header";
 import {API_KEY, MAPBOX_TOKEN} from "../../../../shared/_constant";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 
 
 
 const DetailPage = props => {
+    let history = useHistory()
     const [images, setImages] = useState([1, 2, 3, 4, 5, 6, 7]);
     const [realData, setRealData] = useState({});
     const [loading, setLoading] = useState(true);
+    const [userData, setUserData] = useState({});
 
     const [viewport, setViewport] = useState({
         latitude: 10.8007178,
@@ -38,6 +40,8 @@ const DetailPage = props => {
     useEffect(() => {
         const fetchApi = async () => {
             const data = await axios.get(`${API_KEY}/nha/${params}`)
+            const user = await axios.get(`${API_KEY}/khach_hang/${data.data.nha.id_khach_hang}`)
+            setUserData(user.data)
             setRealData(data.data)
             setLoading(false)
             setMarker({
@@ -53,6 +57,24 @@ const DetailPage = props => {
 
         fetchApi();
     }, [])
+
+    const handleWishlish = async() => {
+        const user = JSON.parse(localStorage.getItem('auth'));
+        if(user) {
+            const body = {
+                id_nha: realData.nha.id_nha,
+                id_khach_hang: user.id
+            }
+            try {
+                await axios.post(`${API_KEY}/nha/yeu_thich`, body)
+                alert("them thanh cong")
+            } catch(e) {
+                console.log(e)
+            }
+        } else {
+            history.push('/login')
+        }
+    }
 
     return (
         <div className="detail page">
@@ -95,18 +117,14 @@ const DetailPage = props => {
 
                                     {/* filter */}
                                     <ul className="socials d-flex">
-                                        <li className="socials__item mr-3">
+                                        <li onClick={handleWishlish} className="socials__item mr-3">
                                             <i className="far fa-heart mr-2"></i>
-                                            Save
+                                            Lưu
                                         </li>
 
-                                        <li className="socials__item mr-3">
-                                            <i className="fas fa-share mr-2"></i>
-                                            Share
-                                        </li>
                                         <li className="socials__item">
                                             <i className="fas fa-ellipsis-h mr-2"></i>{" "}
-                                            More
+                                            <a href={`mailto:${userData.khach_hang.email}`}>Liên hệ</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -119,15 +137,6 @@ const DetailPage = props => {
                                     <p className=" property__infor--address text-dark">
                                         {realData.nha.thanh_pho}
                                     </p>
-
-                                    <div className="property__infor mt-4 d-flex">
-                                        <button className="base-btn mr-2 w-50">
-                                            Request to apply
-                                        </button>
-                                        <button className="base-btn w-50">
-                                            Request a tour
-                                        </button>
-                                    </div>
                                 </div>
 
                                 {/* maps */}

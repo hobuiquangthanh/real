@@ -78,6 +78,7 @@ const CollectionsPage = props => {
                     setSearchResult([...searchData].splice(0, LIMIT))
                     setSearchStr(search)
                     setLoading(false)
+                    if(searchData.length === 0) return
                     setViewport(prevState => {
                         return {
                             ...prevState,

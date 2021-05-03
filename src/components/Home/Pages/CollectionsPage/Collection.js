@@ -88,7 +88,7 @@ const CollectionsPage = (props) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await axios.get(`${API_KEY}/nha`);
+        const data = await axios.get(`${API_KEY}/nha/show_index`);
         if (search) {
           const searchData = [...data.data.nha].filter((item) => {
             const district = item.quan.toLowerCase();

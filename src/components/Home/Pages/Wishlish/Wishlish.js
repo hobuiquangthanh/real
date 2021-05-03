@@ -10,7 +10,11 @@ import Nav from "../../Nav/Nav";
 import Header from "../../Common/Header/Header";
 import Property from "../../Property/Property";
 
-import { API_KEY, MAPBOX_TOKEN } from "../../../../shared/_constant";
+import {
+  API_IMAGES,
+  API_KEY,
+  MAPBOX_TOKEN,
+} from "../../../../shared/_constant";
 
 // scss
 import "../CollectionsPage/CollectionsPage.css";
@@ -68,7 +72,9 @@ const WishlishPage = (props) => {
         const wishlish = [...data.data.nha].map((item) => {
           return realData.data.nha.find((real) => real.id_nha === item.id_nha);
         });
+        console.log(wishlish);
         if (type && !search) {
+          console.log("ccccccc");
           let searchResult = [...wishlish].filter((item) => {
             return item.hinh_thuc === Number(type);
           });
@@ -88,6 +94,7 @@ const WishlishPage = (props) => {
         }
 
         if (type && search) {
+          console.log("bbbbb");
           let searchResult = [...wishlish].filter((item) => {
             if (
               item.hinh_thuc === Number(type) &&
@@ -110,6 +117,7 @@ const WishlishPage = (props) => {
           return;
         }
         if (!type && search) {
+          console.log("aaaaaaaaaaa");
           let searchResult = [...wishlish].filter((item) => {
             if (item.quan.toLowerCase() === search.toLowerCase()) {
               return item;
@@ -117,8 +125,9 @@ const WishlishPage = (props) => {
             return false;
           });
           setSearchResult(searchResult);
+          setLoading(false);
+
           if (searchResult.length === 0) {
-            setLoading(false);
             return;
           }
           setViewport((prevState) => ({
@@ -126,6 +135,7 @@ const WishlishPage = (props) => {
             latitude: Number(searchResult[0].lat),
             longitude: Number(searchResult[0].lon),
           }));
+
           return;
         }
         setSearchResult(wishlish);
@@ -161,7 +171,7 @@ const WishlishPage = (props) => {
       window.location = `http://localhost:3000/wishlish?search=${search}&type=${type}`;
       return;
     }
-    window.location = `http://localhost:3000/collections/${collectionType}?search=${search}`;
+    window.location = `http://localhost:3000/wishlish?search=${search}`;
   };
   return (
     <div className="collections page">
@@ -202,11 +212,8 @@ const WishlishPage = (props) => {
                         className={"custom-popup"}
                         onClick={() => handleMarkerClick(item)}
                       >
-                        <img
-                          src="https://photos.zillowstatic.com/p_e/IS76c3x3zt75q30000000000.jpg"
-                          alt=""
-                        />
-                        <p>{item.mo_ta}</p>
+                        <img src={`${API_IMAGES}/${item.banner}`} alt="" />
+                        <p>{item.duong}</p>
                       </div>
                     </Marker>
                   );

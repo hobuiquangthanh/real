@@ -30,7 +30,7 @@ const Nav = ({ handleSearch, isWish }) => {
       window.location = "http://localhost:3000/wishlish";
       return;
     }
-    history.push("/collections");
+    window.location = "http://localhost:3000/collections";
   };
   return (
     <div className="nav">

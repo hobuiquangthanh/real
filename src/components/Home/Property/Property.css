@@ -40,3 +40,10 @@
     display: inline-block;
     margin-right: 0.5rem;
 }
+
+
+.banner-img {
+    height: 250px !important;
+    width:100%;
+    object-fit: cover;
+}

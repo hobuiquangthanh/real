@@ -7,18 +7,18 @@ import "./Header.css";
 // libs
 import { Link, useRouteMatch } from "react-router-dom";
 
-const Header = props => {
+const Header = (props) => {
   const { url, path } = useRouteMatch();
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    const user = localStorage.getItem("auth")
-    setUser(JSON.parse(user))
-  }, [])
+    const user = localStorage.getItem("auth");
+    setUser(JSON.parse(user));
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("auth");
-    setUser(null)
-  }
+    setUser(null);
+  };
 
   return (
     <header className="header py-3 shadow-sm">
@@ -44,36 +44,49 @@ const Header = props => {
           <div className="flex-fill text-center header__logo">
             <h2>Logo</h2>
           </div>
-          {
-            !user ? (<ul className="header__auth">
+          {!user ? (
+            <ul className="header__auth">
               <li className="mr-5">
                 <Link to={`/login`}>Signin</Link>
               </li>
               <li className="mr-5">
                 <Link to={`/login`}>Register</Link>
               </li>
-            </ul>) : (<ul className="header__auth">
+            </ul>
+          ) : (
+            <ul className="header__auth">
               <li className="mr-5">
                 <div className="dropdown">
-                  <span>
-                    {user.ho_ten}
-                  </span>
+                  <span>{user.ho_ten}</span>
                   <div className="dropdown-content">
-                    <p className="p-link"><Link to={`/wishlish`}>Your Wishlish</Link></p>
-                    <p className="p-link"><a href={`http://localhost:3000/admin/dashboard?user=` + `${user.id}`}>Dashboard</a></p>
+                    <p className="p-link">
+                      <Link to={`/wishlish`}>Your Wishlish</Link>
+                    </p>
+                    <p className="p-link">
+                      <a
+                        href={
+                          `http://localhost:3001/admin/dashboard?user=` +
+                          `${user.id}`
+                        }
+                      >
+                        Dashboard
+                      </a>
+                    </p>
                   </div>
                 </div>
               </li>
               <li className="mr-5">
-                <a onClick={handleLogout} href="#">Logout</a>
+                <a onClick={handleLogout} href="#">
+                  Logout
+                </a>
               </li>
-            </ul>)
-          }
+            </ul>
+          )}
 
           <i className="header__icons fas fa-user-friends"></i>
         </div>
       </nav>
-    </header >
+    </header>
   );
 };
 

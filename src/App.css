@@ -11,6 +11,7 @@ button {
 .marker {
     cursor: pointer !important;
     position:relative;
+    z-index:200000000;
 }
 
 .custom-popup {
@@ -26,7 +27,7 @@ button {
     transform: translate(-50%,-50%);
     transition: 0.4s ease;
     border-radius: 10px;
-    z-index:100000;
+    z-index:100000000000000000000;
 }
 
 .custom-popup img {
